@@ -1,4 +1,4 @@
-from uix.ddd.object_renderer import ObjectRenderer
+from object_renderer import ObjectRenderer
 
 from kivy.core.window import Window  # noqa
 from kivy.lang import Builder

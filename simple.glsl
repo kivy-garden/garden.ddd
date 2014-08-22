@@ -92,6 +92,6 @@ void main (void){
         light += get_light(modelview_mat * light_sources[i], v_normal);
     }
 
-    vec4 color = texture2D(tex, vec2(uv_vec.x, 1 - uv_vec.y)) * vec4(light, v_alpha);
+    vec4 color = texture2D(tex, vec2(uv_vec.x, 1.0 - uv_vec.y)) * vec4(light, v_alpha);
     gl_FragColor = color;
 }
