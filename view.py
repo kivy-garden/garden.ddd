@@ -41,9 +41,9 @@ class MultitouchCamera(object):
             c = self.get_center()
             d = self.get_dist(c)
 
-            self.cam_rotation[1] += (c[0] - self.touches_center[0]) / 5
-            self.cam_rotation[0] -= (c[1] - self.touches_center[1]) / 5
-            self.cam_translation[2] += (d - self.touches_dist) / 10
+            self.cam_rotation[1] += (c[0] - self.touches_center[0]) / 5.
+            self.cam_rotation[0] -= (c[1] - self.touches_center[1]) / 5.
+            self.cam_translation[2] += (d - self.touches_dist) / 10.
 
             self.touches_center = c
             self.touches_dist = d
