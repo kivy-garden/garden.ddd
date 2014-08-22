@@ -34,8 +34,8 @@ class MultitouchCamera(object):
             return super(MultitouchCamera, self).on_touch_move(touch)
 
         if len(self.touches) == 1:
-            self.cam_translation[0] += touch.dx / 100
-            self.cam_translation[1] += touch.dy / 100
+            self.cam_translation[0] += touch.dx / 100.
+            self.cam_translation[1] += touch.dy / 100.
 
         else:
             c = self.get_center()
@@ -43,7 +43,8 @@ class MultitouchCamera(object):
 
             self.cam_rotation[1] += (c[0] - self.touches_center[0]) / 5.
             self.cam_rotation[0] -= (c[1] - self.touches_center[1]) / 5.
-            self.cam_translation[2] += (d - self.touches_dist) / 10.
+            self.cam_translation[2] += \
+                (d - self.touches_dist) / max(self.touches_dist, 1)
 
             self.touches_center = c
             self.touches_dist = d
