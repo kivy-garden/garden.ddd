@@ -1,0 +1,12 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl camera_rubber
+Ns 186.274510
+Ka 0.000000 0.000000 0.000000
+Kd 0.251557 0.251557 0.251557
+Ks 0.322917 0.322917 0.322917
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd reflex_camera_map.jpg
