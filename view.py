@@ -91,7 +91,9 @@ class MultitouchCenteredCamera(MultitouchCamera):
             c = self.get_center()
             d = self.get_dist(c)
 
-            self.obj_scale += (d - self.touches_dist) / 100.
+            self.obj_scale += (d - self.touches_dist) / 1000.
+            self.touches_center = c
+            self.touches_dist = d
         return True
 
 
