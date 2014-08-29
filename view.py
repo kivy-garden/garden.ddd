@@ -72,7 +72,30 @@ class MultitouchCamera(object):
         ) / len(self.touches)
 
 
-class View(MultitouchCamera, ObjectRenderer):
+class MultitouchCenteredCamera(MultitouchCamera):
+    def setup_scene(self):
+        super(MultitouchCenteredCamera, self).setup_scene()
+        self.cam_rot_x.origin = (0, 0, 0)
+        self.cam_rot_x.origin = (0, 0, 0)
+        self.cam_rot_x.origin = (0, 0, 0)
+
+    def on_touch_move(self, touch):
+        if touch.grab_current is not self:
+            return super(MultitouchCamera, self).on_touch_move(touch)
+
+        if len(self.touches) == 1:
+            self.cam_rotation[1] += touch.dx / 5.
+            self.cam_rotation[0] -= touch.dy / 5.
+
+        else:
+            c = self.get_center()
+            d = self.get_dist(c)
+
+            self.obj_scale += (d - self.touches_dist) / 100.
+        return True
+
+
+class BaseView(ObjectRenderer):
     time = NumericProperty(0)
     light_radius = NumericProperty(20)
     move_light = BooleanProperty(True)
@@ -99,16 +122,32 @@ class View(MultitouchCamera, ObjectRenderer):
                 del(self.light_sources[k])
 
     def on_touch_down(self, touch):
-        Clock.unschedule(self.reset)
+        if self.collide_point(*touch.pos):
+            Clock.unschedule(self.reset)
         return super(View, self).on_touch_down(touch)
 
     def on_touch_up(self, touch):
-
         if len(self.touches) == 1 and touch in self.touches:
             Clock.unschedule(self.reset)
             Clock.schedule_once(self.reset, 3)
 
         return super(View, self).on_touch_up(touch)
+
+
+class View(MultitouchCamera, BaseView):
+    pass
+
+
+class CenteredView(MultitouchCenteredCamera, BaseView):
+    min_scale = NumericProperty(0)
+    max_scale = NumericProperty(100)
+
+    def on_obj_scale(self, *args):
+        self.obj_scale = max(
+            self.min_scale, min(
+                self.max_scale,
+                self.obj_scale))
+        super(CenteredView, self).on_obj_scale(*args)
 
 
 KV = '''
