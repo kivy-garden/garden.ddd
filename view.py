@@ -18,6 +18,7 @@ class MultitouchCamera(object):
         self.touches = []
         self.touches_center = []
         self.touches_dist = 0
+        Clock.schedule_interval(self.update_cam, 0)
 
     def on_touch_down(self, touch):
         if super(MultitouchCamera, self).on_touch_move(touch):
@@ -30,13 +31,13 @@ class MultitouchCamera(object):
                 self.touches_center = self.get_center()
                 self.touches_dist = self.get_dist(self.touches_center)
 
-    def on_touch_move(self, touch):
-        if touch.grab_current is not self:
-            return super(MultitouchCamera, self).on_touch_move(touch)
+    def update_cam(self, dt):
+        if not self.touches:
+            return
 
-        if len(self.touches) == 1:
-            self.cam_translation[0] += touch.dx / 100.
-            self.cam_translation[1] += touch.dy / 100.
+        elif len(self.touches) == 1:
+            self.cam_translation[0] += self.touches[0].dx / 100.
+            self.cam_translation[1] += self.touches[0].dy / 100.
 
         else:
             c = self.get_center()
@@ -44,11 +45,11 @@ class MultitouchCamera(object):
 
             self.cam_rotation[1] += (c[0] - self.touches_center[0]) / 5.
             self.cam_rotation[0] -= (c[1] - self.touches_center[1]) / 5.
-            self.cam_translation[2] += \
-                (d - self.touches_dist) / max(self.touches_dist, 1)
+            self.cam_translation[2] += min(.5, max(-.5, (d - self.touches_dist) / 10.))
 
             self.touches_center = c
             self.touches_dist = d
+        return True
 
     def on_touch_up(self, touch):
         if touch.grab_current is self:
@@ -61,15 +62,15 @@ class MultitouchCamera(object):
 
     def get_center(self):
         return (
-            sum(t.x for t in self.touches) / len(self.touches),
-            sum(t.y for t in self.touches) / len(self.touches)
+            sum(t.x for t in self.touches) / float(len(self.touches)),
+            sum(t.y for t in self.touches) / float(len(self.touches))
         ) if self.touches else self.center
 
     def get_dist(self, center):
         return (sum(
             dist(t.pos, center)
             for t in self.touches
-        ) / len(self.touches)) if self.touches else 0
+        ) / float(len(self.touches))) if self.touches else 0
 
 
 class MultitouchCenteredCamera(MultitouchCamera):
@@ -79,19 +80,19 @@ class MultitouchCenteredCamera(MultitouchCamera):
         self.cam_rot_x.origin = (0, 0, 0)
         self.cam_rot_x.origin = (0, 0, 0)
 
-    def on_touch_move(self, touch):
-        if touch.grab_current is not self:
-            return super(MultitouchCamera, self).on_touch_move(touch)
+    def update_cam(self, dt):
+        if not self.touches:
+            return
 
-        if len(self.touches) == 1:
-            self.cam_rotation[1] += touch.dx / 5.
-            self.cam_rotation[0] -= touch.dy / 5.
+        elif len(self.touches) == 1:
+            self.cam_rotation[1] += self.touches[0].dx / 5.
+            self.cam_rotation[0] -= self.touches[0].dy / 5.
 
         else:
             c = self.get_center()
             d = self.get_dist(c)
 
-            self.obj_scale += (d - self.touches_dist) / 1000.
+            self.obj_scale += (d - self.touches_dist) / 100.
             self.touches_center = c
             self.touches_dist = d
         return True
