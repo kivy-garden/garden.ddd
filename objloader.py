@@ -63,9 +63,9 @@ class MeshData(object):
             n[2] = u[0] * v[1] - u[1] * v[0]
 
             # for k in range(3):
-            self.vertices[v1i + 3] = n[k]
-            self.vertices[v2i + 3] = n[k]
-            self.vertices[v3i + 3] = n[k]
+            #     self.vertices[v1i + 3] = n[k]
+            #     self.vertices[v2i + 3] = n[k]
+            #     self.vertices[v3i + 3] = n[k]
 
 
 class ObjFileLoader(object):
