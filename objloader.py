@@ -1,4 +1,5 @@
 import os
+from os.path import dirname, join
 
 
 class MeshData(object):
@@ -145,7 +146,7 @@ class ObjFileLoader(object):
                 self._current_object = values[1]
             elif values[0] == 'mtllib':
                 # load materials file here
-                self.mtl = MTL(values[1])
+                self.mtl = MTL(join(dirname(filename), (values[1])))
             elif values[0] in ('usemtl', 'usemat'):
                 self.obj_material = values[1]
             if values[0] == 'v':
