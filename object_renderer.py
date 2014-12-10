@@ -176,6 +176,14 @@ class ObjectRenderer(Widget):
         else:
             texture = None
 
+        vertex_lenght = sum(x[1] for x in m.vertex_format)
+        if len(m.vertices) % vertex_lenght:
+            print(
+                (
+                    'warning: vertices lenght (%s)'
+                    'is not a multiple of vertex_format lenght(%s)'
+                )
+                % (len(m.vertices), vertex_lenght))
         Mesh(
             vertices=m.vertices,
             indices=m.indices,
