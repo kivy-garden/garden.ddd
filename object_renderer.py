@@ -1,6 +1,12 @@
 from kivy.uix.widget import Widget
 from kivy.resources import resource_find
-from objloader import AssimpObjLoader as ObjFileLoader
+try:
+    from assimpobjloader import AssimpObjLoader as ObjFileLoader
+except Exception as e:
+    print("Error trying to import assimp: %s, using simple objloader" %
+          e.message)
+    from objloader import ObjFileLoader
+
 from kivy.uix.image import Image
 from kivy.graphics.fbo import Fbo
 from kivy.graphics import (
