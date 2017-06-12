@@ -1,6 +1,10 @@
 kivy.ddd
 ========
 
+<img src="https://github.com/kivy-garden/garden.ddd/blob/master/screenshot.png" align="right" width="256" />
+
+
+
 ddd is a set of widgets and tools to display 3d meshes in a kivy
 program. It can load simple .obj+mtl files on its own, but deffer to the
 assimp lib to do the heavy work of loading numerous formats and fixing
